@@ -23,3 +23,7 @@ npm run serve
 ```
 npm run test
 ```
+
+### Configuration File
+
+For security reasons, configuration file required to COD API auth will only be available by request to bitcoder[at]gmail[dot]com.

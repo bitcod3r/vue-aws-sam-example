@@ -1,10 +1,10 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   sam-app
 
   Sample SAM Template for sam-app
-  
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -24,6 +24,22 @@ Resources:
             Path: /hello
             Method: get
 
+  CallOfDutyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: cod-api/
+      Handler: app.codApiHandler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          COD_USERNAME: username
+          COD_PASSWORD: password
+      Events:
+        HttpGet:
+          Type: Api
+          Properties:
+            Path: /cod
+            Method: get
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
@@ -37,3 +53,12 @@ Outputs:
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldFunctionRole.Arn
+  CODApi:
+    Description: "API Gateway endpoint URL for Prod stage for Call of Duty function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/cod/"
+  CODFunction:
+    Description: "COD Lambda Function ARN"
+    Value: !GetAtt CallOfDutyFunction.Arn
+  CODFunctionIamRole:
+    Description: "Implicit IAM Role created for COD function"
+    Value: !GetAtt CallOfDutyFunctionRole.Arn

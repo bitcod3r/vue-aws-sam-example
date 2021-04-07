@@ -6,7 +6,7 @@ describe('App', () => {
   it('should render correctly', () => {
     const wrapper = shallowMount(App)
     // to figure out if the App renders, we can check that the title is displayed...
-    expect(wrapper.text()).to.include(`Welcome to Your Vue.js + TypeScript App`)
+    expect(wrapper.text()).to.include(`Welcome to the challenge app`)
   })
 })
 

@@ -7,12 +7,13 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
+import fetch from 'cross-fetch'
 
 @Component
 export default class App extends Vue {
   message = 'Loading...'
 
-  async mounted() {
+  async mounted(): Promise<void> {
     const res = await fetch('http://localhost:3000/hello');
     if (res.ok) {
       const { message } = await res.json();

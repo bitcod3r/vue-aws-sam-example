@@ -30,7 +30,7 @@ export default class App extends Vue {
     if (resCodApi.ok) {
       const { message, data } = await resCodApi.json();
       this.codApiContent = JSON.stringify(data);
-      console.log("COD endopoint is OK");
+      console.log("COD endopoint is " + message);
     }
   }
 

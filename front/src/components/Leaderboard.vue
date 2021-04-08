@@ -1,10 +1,10 @@
 <template>
   <section>
-    <div>gamers.platform</div>
-    <div>gamers.type</div>
-    <div :key="gamer.id" v-for="gamer in gamers">
-      <Gamer gamer="gamer" />
-    </div>
+    <div><strong>Platform: </strong> {{ gamers.platform }}</div>
+    <div><strong>Type: </strong> {{ gamers.type }}</div>
+    
+      <Gamer :key="gamer.rank" v-for="gamer in gamers.leaders" :gamer="gamer" />
+    
   </section>
 </template>
 
@@ -13,11 +13,6 @@
   export default {
     name: 'Leaderboard',
     components: { Gamer },
-    props: gamers,
-    // data() {
-    //   return {
-    //     codApiContent:
-    //   }
-    // }
+    props: ['gamers'],
   }
 </script>

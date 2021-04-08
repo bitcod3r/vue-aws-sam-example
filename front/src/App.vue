@@ -6,7 +6,7 @@
       <p>{{ message }}</p>
     </header>
     
-    <Leaderboard :gamers="gamers" />
+    <Leaderboard :gamers=gamers />
   </div>
 </template>
 
@@ -22,7 +22,6 @@ import Leaderboard from './components/Leaderboard.vue'
 })
 export default class App extends Vue {
   message = 'Loading...';
-  codApiContent = 'Loading...';
   gamers = {}; // Payload with COD Leaderboad gamers data 
 
   async mounted(): Promise<void> {
@@ -36,95 +35,18 @@ export default class App extends Vue {
     // Reaching out second Lambda
     const resCodApi = await fetch('http://localhost:3000/cod');
     if (resCodApi.ok) {
-      console.log("COD endopoint is " + this.message);
       const { message, data } = await resCodApi.json();
-      this.gamers = this.getGamers(data);
-    } else {
-      // Set gamers without values.
-    }
-  }
-  
-  getGamers(payload) {
-    let gamers : { 
-                    platform: String,
-                    type: String,
-                    leaders: Array<{
-                      id: Number,
-                      username: String,
-                      kills: Number,
-                      level: Number,
-                      accuracy: Number,
-                      score: Number,
-                      assists: Number,
-                    }>
-                 }
-
-    gamers = { 
-              platform: "battle",
-              type: "core",
-              leaders: [
-                {
-                  id: 1,
-                  username: "guizao23#6674996",
-                  kills: 1242,
-                  level: 80,
-                  accuracy: 111,
-                  score: 123,
-                  assists: 6342
-                },
-                {
-                  id: 2,
-                  username: "guizao23#6674996",
-                  kills: 1242,
-                  level: 80,
-                  accuracy: 111,
-                  score: 123,
-                  assists: 6342
-                },
-                {
-                  id: 3,
-                  username: "guizao23#6674996",
-                  kills: 1242,
-                  level: 80,
-                  accuracy: 111,
-                  score: 123,
-                  assists: 6342
-                },
-                {
-                  id: 4,
-                  username: "guizao23#6674996",
-                  kills: 1242,
-                  level: 80,
-                  accuracy: 111,
-                  score: 123,
-                  assists: 6342
-                },
-              ]
-            }
+      console.log("COD endopoint is " + message);
       
+      // console.log(data);
+      const { platform, leaderboardType, entries } = data.codApiResponse;
 
-/*
-  gamers.platform = codApiResponse.platform
-  gamers.type = codApiResponse.leaderboardType
-
-  let entries = payload.entries
-
-  for(let key in entries) {
-    gamers.leaders.push({
-      id= key.rank,
-      username= key.username,
-      kills= key.kills,
-      level= key.level,
-      accuracy= key.accuracy,
-      score= key.score,
-      assists= key.assists
-    })
-  }
-
-
-*/
-
-    return gamers;
+      this.gamers =  {      
+        platform : platform,
+        type: leaderboardType,
+        leaders: entries
+      }
+    }
   }
 
 }

@@ -1,21 +1,28 @@
 <template>
   <div id="app">
-    <h1>Welcome to the challenge app</h1>
-    <p>{{ message }}</p>
-    <div>
-      {{ codApiContent }}
-    </div>
+    <header>
+      <h1>Vue+AWS SAM Example</h1>
+      <p>Featuring CallOfDuty API</p>
+      <p>{{ message }}</p>
+    </header>
+    
+    <Leaderboard :gamers=gamers />
   </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import fetch from 'cross-fetch';
+import fetch from 'cross-fetch'
+import Leaderboard from './components/Leaderboard.vue'
 
-@Component
+@Component({
+  components: {
+    Leaderboard,
+  }
+})
 export default class App extends Vue {
   message = 'Loading...';
-  codApiContent = 'Loading...';
+  gamers = {}; // Payload with COD Leaderboad gamers data 
 
   async mounted(): Promise<void> {
     
@@ -29,8 +36,16 @@ export default class App extends Vue {
     const resCodApi = await fetch('http://localhost:3000/cod');
     if (resCodApi.ok) {
       const { message, data } = await resCodApi.json();
-      this.codApiContent = JSON.stringify(data);
       console.log("COD endopoint is " + message);
+      
+      // console.log(data);
+      const { platform, leaderboardType, entries } = data.codApiResponse;
+
+      this.gamers =  {      
+        platform : platform,
+        type: leaderboardType,
+        leaders: entries
+      }
     }
   }
 
